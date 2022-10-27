@@ -329,7 +329,6 @@ void RR(queue *q, int n)
         if (tempRT[i] <= quantum && tempRT[i] > 0)
         {
             time += tempRT[i];
-            // Addition using shorthand operators
             tempRT[i] = 0;
             reachedQT = 1;
         }
@@ -337,9 +336,7 @@ void RR(queue *q, int n)
         else if (tempRT[i] > 0)
         {
             tempRT[i] -= quantum;
-            // Subtraction using shorthand operators
             time += quantum;
-            // Addition using shorthand operators
         }
 
         if (tempRT[i] == 0 && reachedQT == 1)
