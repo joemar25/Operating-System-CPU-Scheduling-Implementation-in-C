@@ -28,15 +28,18 @@ class Scheduler:
         """
         self.queue.sort(key=lambda p: p.at)
 
-        ct = att = awt = 0
-
-        print("=========================================")
+        print("\n=========================================")
         print("\nCPU SCHED := FCFS\n")
         print("-----------------------------------------")
         print("| Process | AT  | BT  | CT  | TT  | WT  |")
         print("-----------------------------------------")
-        for p in self.queue:
-            ct += int(p.at) + int(p.bt)
+        counter = ct = att = awt = 0
+        for p in queue:
+            if counter == 0 and int(p.at) > 0:
+                ct += int(p.at) + int(p.bt)
+            else:
+                ct += int(p.bt)
+
             p.ct = ct
             p.tt = int(p.ct) - int(p.at)
             p.wt = int(p.tt) - int(p.bt)
@@ -87,23 +90,28 @@ class Scheduler:
             for i in range(len(self.queue)):
                 queue.insert((i+1), self.queue[i])
 
-        ct = att = awt = 0
-
-        print("=========================================")
+        print("\n=========================================")
         print("\nCPU SCHED := SJF\n")
         print("-----------------------------------------")
         print("| Process | AT  | BT  | CT  | TT  | WT  |")
         print("-----------------------------------------")
+
+        counter = ct = att = awt = 0
         for p in queue:
-            ct += int(p.at) + int(p.bt)
+            if counter == 0 and int(p.at) > 0:
+                ct += int(p.at) + int(p.bt)
+            else:
+                ct += int(p.bt)
+
             p.ct = ct
             p.tt = int(p.ct) - int(p.at)
             p.wt = int(p.tt) - int(p.bt)
             att += p.tt
             awt += p.wt
 
-            print(
-                f"| {p.id : <3}     | {p.at : <3} | {p.bt : <3} | {p.ct:<3} | {p.tt:<3} | {p.wt:<3} |")
+            self.display(p)
+
+            counter += 1
 
         att /= len(queue)
         awt /= len(queue)
@@ -114,21 +122,14 @@ class Scheduler:
         print("AWT = %.1f ms" % awt)
 
     def Process(self):
-        # self.FCFS()
+        self.FCFS()
         self.SJF()
 
     # test display
-    def display(self):
-        [
-            [
-                print("id=", p.id),
-                print("pr=", p.pr),
-                print("at=", p.at),
-                print("bt=", p.bt),
-                print()
-            ]
-            for p in self.queue
-        ]
+    def display(self, p):
+        print(
+            f"| {p.id : <3}     | {p.at : <3} | {p.bt : <3} | {p.ct:<3} | {p.tt:<3} | {p.wt:<3} |"
+        )
 
 
 # main
@@ -147,8 +148,9 @@ for i in range(int(input("input number of processes: "))):
 # cpu schedling
 Scheduler(queue).Process()
 
-"""
 
+"""
+FCFC test
 3
 1
 0
@@ -186,5 +188,42 @@ P5
 0
 4
 5
+
+SJF test
+
+Process ID  Arrival Time  Burst Time  Waiting Time  Turnaround Time
+2              0              4              0              4
+3              4              2              0              2
+1              2              3              4              7
+4              5              4              4              8
+5              6              6              7             13
+6              7              7             12             19
+
+6
+1
+0
+2
+3
+2
+0
+0
+4
+3
+0
+4
+2
+4
+0
+5
+4
+5
+0
+6
+6
+6
+0
+7
+7
+
 
 """
