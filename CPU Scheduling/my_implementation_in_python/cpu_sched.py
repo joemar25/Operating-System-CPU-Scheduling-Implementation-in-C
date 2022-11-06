@@ -23,6 +23,8 @@ class Scheduler:
         # assumes that all arrived at 0
         """
             test arrival time vulnerability
+
+            _1__345_7
         """
         self.queue.sort(key=lambda p: p.at)
 
@@ -68,10 +70,22 @@ class Scheduler:
                 if all of the queue process arrived at 0, sort by bt
             """
             self.queue.sort(key=lambda p: p.bt)
+            queue = self.queue
         else:
             # this would be the temp queue
             queue = []
-            print("hindi lahat 0")
+            # sort by arrival time
+            self.queue.sort(key=lambda p: p.at)
+            # get the first element
+            # firstElem = self.queue[0]
+            queue.insert(0, self.queue[0])
+            # delete first element
+            del self.queue[0]
+            # sort old list by burst time
+            self.queue.sort(key=lambda p: p.bt)
+            # list checking
+            for i in range(len(self.queue)):
+                queue.insert((i+1), self.queue[i])
 
         ct = att = awt = 0
 
@@ -80,7 +94,7 @@ class Scheduler:
         print("-----------------------------------------")
         print("| Process | AT  | BT  | CT  | TT  | WT  |")
         print("-----------------------------------------")
-        for p in self.queue:
+        for p in queue:
             ct += int(p.at) + int(p.bt)
             p.ct = ct
             p.tt = int(p.ct) - int(p.at)
@@ -91,8 +105,8 @@ class Scheduler:
             print(
                 f"| {p.id : <3}     | {p.at : <3} | {p.bt : <3} | {p.ct:<3} | {p.tt:<3} | {p.wt:<3} |")
 
-        att /= len(self.queue)
-        awt /= len(self.queue)
+        att /= len(queue)
+        awt /= len(queue)
 
         print("-----------------------------------------")
 
