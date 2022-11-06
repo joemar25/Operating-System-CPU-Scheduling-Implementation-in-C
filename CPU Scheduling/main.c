@@ -22,7 +22,7 @@
 
 #include <stdio.h>
 #include <stdlib.h> // use malloc, free
-#pragma pack(1)     // We can avoid the wastage of memory by simply writing #pragma pack(1) : https://iq.opengenus.org/size-of-struct-in-c/
+#pragma pack(1)     // We can avoid the wastage of memory by simply writing #pragma pack(1)
 
 /**
  * @note my_standard::Global Variables => will be used for iteration(s)
@@ -250,14 +250,9 @@ void PRIO(queue *q, int n)
     (q + i)->tt = 0;
     (q + i)->wt = 0;
 
-    if (isSync(q, n) != 1)
-    {
-        qsort(q, n, sizeof(queue), compareID);
-    }
+    qsort(q, n, sizeof(queue), comparePR);
     if (isPRSync(q, n) != 1)
-    {
         qsort(q, n, sizeof(queue), compareAT);
-    }
     else
     {
         for (i = 0; i < n; i++)
